@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { searchTracks } from '../services/lastfmApi'
+import lastfmService from '../services/lastfmService'
 import './SongSearch.css'
 
 function SongSearch({ onSongSelect }) {
@@ -15,9 +15,12 @@ function SongSearch({ onSongSelect }) {
     setError(null)
 
     try {
-      const tracks = await searchTracks(query)
+      console.log('Searching for:', query)
+      const tracks = await lastfmService.searchTrack(query)
+      console.log('Search results:', tracks)
       setResults(tracks)
     } catch (err) {
+      console.error('Search error:', err)
       setError('Failed to search tracks. Please try again.')
       setResults([])
     } finally {

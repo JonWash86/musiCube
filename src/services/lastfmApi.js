@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-const LASTFM_API_KEY = import.meta.env.VITE_LASTFM_API_KEY
-const BASE_URL = import.meta.env.VITE_LASTFM_API_URL
+const LASTFM_API_KEY = import.meta.env.LASTFM_API_KEY
+const BASE_URL = import.meta.env.LASTFM_API_URL
 
 export const searchTracks = async (query) => {
   try {
@@ -52,6 +52,23 @@ export const getSimilarTracks = async (artist, track) => {
     return response.data.similartracks.track
   } catch (error) {
     console.error('Error getting similar tracks:', error)
+    throw error
+  }
+}
+
+export const getArtistInfo = async (artist) => {
+  try {
+    const response = await axios.get(`${BASE_URL}`, {
+      params: {
+        method: 'artist.getInfo',
+        artist: artist,
+        api_key: LASTFM_API_KEY,
+        format: 'json'
+      }
+    })
+    return response.data.artist
+  } catch (error) {
+    console.error('Error getting artist info:', error)
     throw error
   }
 } 
